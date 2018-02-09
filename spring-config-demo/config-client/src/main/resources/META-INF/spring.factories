@@ -1,0 +1,3 @@
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+com.example.configclient.config.RedisConnection,\
+com.example.configclient.exception.CustomErrorMvcAutoConfiguration

@@ -1,0 +1,48 @@
+spring:
+  profiles: dev
+  cloud:
+    config:
+      profile: pro
+      uri: http://localhost:1111
+      label: master
+  application:
+    name: simple
+
+#如果想在这里配置多个环境的config配置来连接不同的github仓库 ---必不可少,然后在 Edit Configurations 中 在ACtive Profile上
+#加上profiles对应的配置
+
+
+---
+spring:
+  profiles: pro
+  cloud:
+    config:
+      profile: test
+      uri: http://yang123:yang123@localhost:1111   #如果configServer配置了security 这个就要加上用户名和密码
+      label: master
+#      username: yang123
+#      password: yang123   #推荐用这种方式  因为如果把configServer注册到eruarka中 上面那种方式就不适用了因为没有地址了,只有服务的名字了 同时存在的话以下面的为首选
+  application:
+    name: simple1
+
+---
+spring:
+  profiles: test
+  cloud:
+      config:
+        label: master
+        discovery:
+          enabled: true
+          service-id: config-server
+        username: yang123
+        password: yang123   #推荐用这种方式  因为如果把configServer注册到eruarka中 上面那种方式就不适用了因为没有地址了,只有服务的名字了 同时存在的话以下面的为首选
+  application:
+    name: simple1
+
+management:
+  security:
+    enabled: false   # 这个为true的话 一些方法比如/refresh 调用的话会返回错误 需要验证身份的
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:3333/eureka/

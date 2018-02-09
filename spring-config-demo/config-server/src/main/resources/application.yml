@@ -1,0 +1,40 @@
+server:
+  port: 1111
+
+
+spring:
+  cloud:
+    config:
+      server:
+        git:
+          uri: https://github.com/yangwenfu/myProject #如果有多个仓库可以用{application}匹配 这里只有myProject仓库
+          search-paths:         #一个仓库有多个配置的文件夹可以这样匹配{application}
+            - '{application}'
+          username: yangwenfu      #如果我们的github仓库是私有的要用上用户名和密码在这里配置
+          password: yangwenfu123
+  application:
+    name: config-server
+encrypt:
+  key: foobar    #这是对称加密的加载因子  当configService启动 调用localhost:1111/encrypt -d mysecret 就对这个之用foobar
+#  加密因子加密 解密也是通过这个东西解密 client不用改变代码
+#还有非对称加密 在官方文档上可以看到
+
+
+#https://springcloud.cc/spring-cloud-config.html  springcloudConfig的中文文档
+#springCloudConfig可以给配置文件加密但是要下载一个JCE
+#下载地址http://www.oracle.com/technetwork/java/javase/downloads/jce8-download-2133166.html (jdk8)
+#需要注册oracle用户才可以下载 解压下载的文件把里面两个jar包放到JRE lib / security目录中的2个策略文件替换为您下载的文件(即替换就行)
+
+security:
+  basic:
+    enabled: true
+  user:
+    password: yang123
+    name: yang123
+ #加个security依赖  这个设置是访问这个config是需要输入用户和密码才可以获取到内容
+
+
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:3333/eureka/
